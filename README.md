@@ -1,10 +1,10 @@
 # hetzner-dyndns
 
-Ein minimalistischer DynDNS-Client für **Hetzner DNS**. Der Container ermittelt regelmäßig die öffentliche IPv4-Adresse des Hosts und aktualisiert einen A-Record in einer Hetzner-DNS-Zone, falls sich die IP geändert hat.
+Ein minimalistischer DynDNS-Client für **Hetzner DNS** (die neue, in die **Hetzner Cloud Console** integrierte DNS-Umgebung – nicht die alte separate DNS Console unter dns.hetzner.com). Der Container ermittelt regelmäßig die öffentliche IPv4-Adresse des Hosts und aktualisiert einen A-Record in einer Hetzner-DNS-Zone, falls sich die IP geändert hat.
 
 ## Features
 
-- Aktualisiert einen A-Record (IPv4) automatisch über die [Hetzner DNS API](https://dns.hetzner.com/api-docs)
+- Aktualisiert einen A-Record (IPv4) automatisch über die Hetzner Cloud API (`api.hetzner.cloud`)
 - Lokaler IP-Cache – ruft die Hetzner API nur auf, wenn sich die IP tatsächlich geändert hat (schont das Rate-Limit)
 - Lock-Mechanismus verhindert parallele Läufe
 - Health-Check-Endpoint über einen eingebauten Mini-Webserver (Port `22222`)
@@ -12,9 +12,9 @@ Ein minimalistischer DynDNS-Client für **Hetzner DNS**. Der Container ermittelt
 
 ## Voraussetzungen
 
-- Eine Domain, deren DNS bei Hetzner (Hetzner DNS Console) verwaltet wird
-- Ein API-Token aus der [Hetzner DNS Console](https://dns.hetzner.com/settings/api-token)
-- Der Ziel-Record (z.B. `vpn.example.com` oder `@`) muss **einmalig manuell** in der Hetzner-DNS-UI angelegt werden – das Script legt keine neuen Records an, es aktualisiert nur bestehende
+- Eine Domain, deren DNS über die neue DNS-Funktion in der **Hetzner Cloud Console** ([console.hetzner.cloud](https://console.hetzner.cloud)) verwaltet wird
+- Ein API-Token mit DNS-Berechtigung, erzeugt in der Hetzner Cloud Console (Projekt → Security → API Tokens)
+- Der Ziel-Record (z.B. `vpn.example.com` oder `@`) muss **einmalig manuell** in der Hetzner-Cloud-DNS-UI angelegt werden – das Script legt keine neuen Records an, es aktualisiert nur bestehende
 - Docker & Docker Compose
 
 ## Installation
@@ -31,7 +31,7 @@ docker compose up -d --build
 
 | Variable | Pflicht | Beschreibung | Beispiel |
 |---|---|---|---|
-| `HETZNER_TOKEN` | ja | API-Token aus der Hetzner DNS Console | `abcdef123...` |
+| `HETZNER_TOKEN` | ja | API-Token aus der Hetzner Cloud Console (mit DNS-Berechtigung) | `abcdef123...` |
 | `ZONE` | ja | Name der DNS-Zone | `example.com` |
 | `RECORD_NAME` | ja | Name des zu aktualisierenden Records innerhalb der Zone | `vpn` (für `vpn.example.com`) oder `@` (für die Zone selbst) |
 | `TYPE` | ja | Record-Typ, aktuell nur `A` (IPv4) unterstützt | `A` |
