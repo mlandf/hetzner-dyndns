@@ -49,6 +49,8 @@ Der Container startet einen kleinen Webserver auf Port `22222`, der das `/state`
 - `http://<host>:22222/health.json` – Status als JSON (`status`, `message`, `ip`, `dns_value`, `timestamp_utc`)
 - `http://<host>:22222/healthz` – einfacher Text-Status (`OK` / `ERROR`)
 
+Damit lässt sich der Container gut mit [Uptime Kuma](https://github.com/louislam/uptime-kuma) überwachen: Monitortyp **HTTP(s) - Schlüsselwort**, URL `http://<host>:22222/healthz`, Schlüsselwort `OK`. Schlägt ein Lauf fehl (z.B. IP nicht ermittelbar oder DNS-Update fehlgeschlagen), steht dort `ERROR` und der Monitor schlägt Alarm.
+
 ## Funktionsweise
 
 1. Eigene öffentliche IPv4 ermitteln
