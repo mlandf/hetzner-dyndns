@@ -1,0 +1,16 @@
+services:
+  hetzner-ddns:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: hetzner-ddns
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ddns_state:/state
+    ports:
+      - "22222:22222"
+
+volumes:
+  ddns_state:
